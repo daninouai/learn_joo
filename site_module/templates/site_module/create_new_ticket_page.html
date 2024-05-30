@@ -1,0 +1,51 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+
+{% block title %}
+    لرنجو | نوشتن تیکت جدید
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">خانه</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">نوشتن تیکت جدید</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-header">تیکت جدید</div>
+
+                        <div class="card-body">
+                            <form action="{% url 'new_ticket_page' %}" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12 mt-3">
+                                        <label class="form-label" for="requesttype">موضوع تیکت:</label>
+                                        {{ new_request }}
+                                        <label class="form-label" for="floatingTextarea">متن پیام:</label>
+                                        <div class="form-floating">
+                                            {{ message_content }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-info mb-2 mt-4"><i class="bi bi-check"></i> ارسال تیکت</button>
+                            </form>
+                        </div>
+
+                    </div><!-- End Card with header and footer -->
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

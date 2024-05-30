@@ -1,0 +1,149 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+{% load thumbnail %}
+
+{% block title %}
+    لرنجو | مشخصات کاربری
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">مشخصات کاربری</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">کاربر</li>
+                    <li class="breadcrumb-item active">مشخصات کاربری</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section profile">
+            <div class="row">
+                <div class="col-xl-4">
+
+                    <div class="card">
+                        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                            {% thumbnail user.user.image "120x120" crop="50%" format="WEBP" as im %}
+                                <img src="{{ im.url }}" alt="پروفایل" class="rounded-circle">
+                            {% endthumbnail %}
+                            <h2 class="mb-3">{{ user_base.get_full_name }}</h2>
+                            <h3>{{ user | get_user_role }}</h3>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-8">
+
+                    <div class="card">
+                        <div class="card-body pt-3">
+                            <!-- Bordered Tabs -->
+                            <ul class="nav nav-tabs nav-tabs-bordered">
+
+                                <li class="nav-item">
+                                    <a href="{% url 'user_profile' %}" class="nav-link active" data-bs-target="#profile-overview">مشخصات</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{% url 'edit_profile' %}" class="nav-link" data-bs-target="#profile-edit">ویرایش مشخصات</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{% url 'change_password' %}" class="nav-link" data-bs-target="#profile-change-password">تغییر کلمه عبور</a>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content pt-2">
+
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                                    <h5 class="card-title">مشخصات کاربری</h5>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">نام کامل</div>
+                                        <div class="col-lg-9 col-md-8">{{ user_base.get_full_name }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">
+                                            {% if user|get_model_name == 'student' %}
+                                                شماره دانشجویی
+                                            {% else %}
+                                                کد پرسنلی
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-lg-9 col-md-8">
+                                            {% if user|get_model_name == 'student' %}
+                                                {{ user.student_number }}
+                                            {% else %}
+                                                {{ user.personnel_code }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">کد ملی</div>
+                                        <div class="col-lg-9 col-md-8">{{ user_base.national_code }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">نام پدر</div>
+                                        <div class="col-lg-9 col-md-8">{{ user_base.father_name }}</div>
+                                    </div>
+
+                                    {% if user|get_model_name == 'student' %}
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">رشته</div>
+                                            <div class="col-lg-9 col-md-8">{{ user.major.get_show_name }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">مقطع</div>
+                                            <div class="col-lg-9 col-md-8">{{ user.major.get_section_display }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">گروه آموزشی</div>
+                                            <div class="col-lg-9 col-md-8">{{ user.major.educational_group.get_show_name }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">وضعیت تحصیل</div>
+                                            <div class="col-lg-9 col-md-8">{{ user.get_education_status_display }}</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-4 label">نوع پذیرش</div>
+                                            <div class="col-lg-9 col-md-8">{{ user.get_admission_display }}</div>
+                                        </div>
+                                    {% endif %}
+
+
+
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">شماره تلفن</div>
+                                        <div class="col-lg-9 col-md-8">{{ user_base.phone_number }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">ایمیل</div>
+                                        <div class="col-lg-9 col-md-8">{{ user_base.email }}</div>
+                                    </div>
+
+                                </div>
+
+                            </div><!-- End Bordered Tabs -->
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

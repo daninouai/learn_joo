@@ -1,0 +1,75 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+{% load thumbnail %}
+
+{% block title %}
+    لرنجو | ثبت نمرات
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">ثبت نمرات</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">امور کلاس ها</li>
+                    <li class="breadcrumb-item active">ثبت نمرات کلاس {{ lessons.lesson.lesson_name }} {{ lessons.get_class_formation_time_display }}</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">لیست دانشجویان کلاس</h5>
+
+                            <form action="{% url 'record_mark_detail' presentation_id=lessons.id %}" method="post">
+                                {% csrf_token %}
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>سطر</th>
+                                        <th>تصویر</th>
+                                        <th>نام خانوادگی</th>
+                                        <th>نام</th>
+                                        <th>نام پدر</th>
+                                        <th>کد ملی</th>
+                                        <th>شماره</th>
+                                        <th>نمره نیمسال</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for student in merged_data %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>
+                                                {% thumbnail student.0.user.image "50x50" crop="50%" format="WEBP" as im %}
+                                                    <img src="{{ im.url }}" alt="پروفایل" class="">
+                                                {% endthumbnail %}
+                                            </td>
+                                            <td>{{ student.0.user.last_name }}</td>
+                                            <td>{{ student.0.user.first_name }}</td>
+                                            <td>{{ student.0.user.father_name }}</td>
+                                            <td>{{ student.0.user.national_code }}</td>
+                                            <td>{{ student.0.student_number }}</td>
+                                            <td><input class="form-control" type="text" placeholder="-" style="max-width: 120px;" name="marks" id="mark{{ student.0.student_number }}" value="{% if student.1 %}{{ student.1 }}{% endif %}"></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <button type="submit" class="btn btn-success"><i class="bi bi-check"></i> ثبت نمرات</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

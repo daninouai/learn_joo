@@ -1,0 +1,58 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+
+{% block title %}
+    لرنجو | جستوجوی کلاس درس های ارائه شده
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">جستوجوی کلاس درس های ارائه شده</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">برنامه ریزی آموزشی</li>
+                    <li class="breadcrumb-item active">جستوجوی کلاس درس های ارائه شده</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <section class="section">
+            <div class="row">
+
+                <div class="d-flex flex-column align-items-center justify-content-center">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">نام یا کد درس را وارد کنید.</h5>
+
+                            <!-- Floating Labels Form -->
+                            <form class="row g-3" action="{% url 'search_query' %}" method="GET">
+                                {% csrf_token %}
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="lessonName" name="lessonName" placeholder="نام درس">
+                                        <label for="floatingEmail">نام درس</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="lessonCode" name="lessonCode" placeholder="کد درس">
+                                        <label for="floatingPassword">کد درس</label>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">جستوجو</button>
+                                    <button type="reset" class="btn btn-secondary">حذف فیلد ها</button>
+                                </div>
+                            </form><!-- End floating Labels Form -->
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

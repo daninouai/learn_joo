@@ -1,0 +1,35 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | انتخاب واحد
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">انتخاب واحد</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">برنامه ریزی آموزشی</li>
+                    <li class="breadcrumb-item active">انتخاب واحد</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <section class="section">
+            <div class="row">
+
+                <div class="d-flex flex-column align-items-center justify-content-center">
+
+                    <div class="alert alert-danger">
+                        <p>شما در این زمان مجاز به انتخاب واحد نمی باشید.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

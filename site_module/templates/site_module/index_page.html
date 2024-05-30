@@ -1,0 +1,65 @@
+{% extends 'shared/auth_layout/_layout.html' %}
+
+{% block title %}
+    لرنجو | صفحه اصلی
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container">
+
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                            <div class="d-flex justify-content-center py-4">
+                                <a href="{% url 'index_page' %}" class="logo d-flex align-items-center w-auto">
+                                    <img src="/static/assets/img/logo.png" alt="">
+                                    <span class="d-lg-block ml-3">لرنجو</span>
+                                    <small>سامانه مدیریت امور دانشجویی</small>
+                                </a>
+                            </div><!-- End Logo -->
+
+                            <div class="card mb-3">
+
+                                <div class="card-body">
+                                    <div class="pt-4 pb-2">
+                                        <h5 class="card-title text-center pb-0 fs-4 mb-4">ورود دانشجو</h5>
+                                        <p class="text-center small">دسترسی دانشجویان به امور انتخاب واحد، ثبت درخواست ها، پرداخت شهریه و...</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <a href="{% url 'student_login' %}" class="btn btn-primary w-100" type="submit">ورود</a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="card mb-3">
+
+                                <div class="card-body">
+                                    <div class="pt-4 pb-2">
+                                        <h5 class="card-title text-center pb-0 fs-4 mb-4">ورود اساتید و کارکنان</h5>
+                                        <p class="text-center small">دسترسی اساتید و کارکنان به امور تعریف کلاس ها، ثبت نمرات و سایر موارد.</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <a href="{% url 'staff_teacher_login' %}" class="btn btn-primary w-100" type="submit">ورود</a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="credits">
+                                تمامی حقوق متعلق به <a href="{% url 'index_page' %}">لرنجو</a> است
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </main><!-- End #main -->
+{% endblock %}

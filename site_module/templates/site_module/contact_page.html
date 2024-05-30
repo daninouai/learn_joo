@@ -1,0 +1,51 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+
+{% block title %}
+    لرنجو | تیکت و پشتیبانی
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">خانه</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">تیکت و پشتیبانی</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-header pb-2 pt-3">
+                            <a href="{% url 'new_ticket_page' %}" class="btn btn-warning mb-2"><i class="bi bi-ticket"></i> ارسال تیکت</a>
+                        </div>
+                        <div class="card-header">تیکت ها</div>
+                        {% for contact in all_contacts %}
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">{{ contact.subject }}</h5>
+                                    <small class="mt-4">{{ contact.create_date }}</small>
+                                </div>
+                                {% if contact.is_closed %}
+                                    پاسخ داده شده
+                                {% else %}
+                                    در انتظار پاسخ
+                                {% endif %}
+                                <br>
+                                <a href="{% url 'contact_messages_detail' pk=contact.id %}" class="btn btn-success mt-4"><i class="bi bi-eye"></i> مشاهده جزئیات</a>
+                            </div>
+                            <hr>
+                        {% endfor %}
+                    </div><!-- End Card with header and footer -->
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

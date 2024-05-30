@@ -1,0 +1,142 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | انتخاب واحد
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">انتخاب واحد</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">برنامه ریزی آموزشی</li>
+                    <li class="breadcrumb-item active">انتخاب واحد</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <section class="section">
+            <div class="row">
+
+                <div class="d-flex flex-column align-items-center justify-content-center">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">نام یا کد درس را وارد کنید.</h5>
+
+                            {% if messages %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+
+                            <!-- Floating Labels Form -->
+                            <form class="row g-3" action="{% url 'search_query_units' %}" method="GET">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ search_token }}" name="searchtoken" id="searchtoken">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="lessonName" name="lessonName" placeholder="نام درس">
+                                        <label for="floatingEmail">نام درس</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="lessonCode" name="lessonCode" placeholder="کد درس">
+                                        <label for="floatingPassword">کد درس</label>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">جستوجو</button>
+                                    <button type="reset" class="btn btn-secondary">حذف فیلد ها</button>
+                                </div>
+                            </form><!-- End floating Labels Form -->
+
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">واحد های انتخاب شده</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr class="text-center">
+                                    <th>سطر</th>
+                                    <th>نام درس</th>
+                                    <th>کد درس</th>
+                                    <th>نام استاد</th>
+                                    <th data-type="date" data-format="YYYY/DD/MM">زمان تشکیل کلاس</th>
+                                    <th>ظرفیت کلاس</th>
+                                    <th>حذف واحد</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for lesson in current_presentation %}
+                                    <tr class="text-center">
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ lesson.lesson.lesson_name }}</td>
+                                        <td>{{ lesson.lesson.lesson_code }}</td>
+                                        <td>{{ lesson.teacher }}</td>
+                                        <td>{{ lesson.get_class_formation_time_display }}</td>
+                                        <td>{{ lesson.capacity | person_suffix }}</td>
+                                        <td><a onclick="removeUnitAction('{{ lesson.id }}')" class="btn btn-danger"><i class="bi bi-x"></i></a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+
+                            <script>
+                                function removeUnitAction(presentation_id) {
+                                    var data = new FormData();
+                                    data.append('selected_lesson_id', presentation_id);
+
+                                    fetch('/remove-unit-action', {
+                                        method: 'POST',
+                                        body: data,
+                                        headers: {
+                                            'X-CSRFToken': getCookie('csrftoken'),
+                                        },
+                                    })
+                                        .then(res => {
+                                            window.location.href = '/select-unit';
+                                        })
+                                        .catch((error) => {
+                                            console.error('Error:', error);
+                                        });
+                                }
+
+                                function getCookie(name) {
+                                    let cookieValue = null;
+                                    if (document.cookie && document.cookie !== '') {
+                                        const cookies = document.cookie.split(';');
+                                        for (let i = 0; i < cookies.length; i++) {
+                                            const cookie = cookies[i].trim();
+                                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    return cookieValue;
+                                }
+                            </script>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | اعتراض به نمره در نیمسال جاری
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">اعتراض به نمره در نیمسال جاری</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">ثبت نام دروس</li>
+                    <li class="breadcrumb-item active">اعتراض به نمره در نیمسال جاری</li>
+                </ol>
+            </nav>
+        </div>
+
+        <section class="section profile">
+            <div class="row">
+
+                <div class="col-xl-12">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">ثبت اعتراض برای درس {{ mark.presentation.lesson }} - {{ mark.presentation.teacher }}</h5>
+
+                            <form action="{% url 'student_grade_appeal_detail' mark_id=mark.id %}" method="post" class="row g-3">
+                                {% csrf_token %}
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        {{ form.appel_text }}
+                                        <label for="floatingTextarea">{{ form.appel_text.label }}</label>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">ثبت اعتراض</button>
+                                    <button type="reset" class="btn btn-secondary">حذف فیلد ها</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | مدیریت پرداخت ها
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">مدیریت پرداخت ها</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">امور مالی</li>
+                    <li class="breadcrumb-item active">مدیریت پرداخت ها</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            {% if messages %}
+                                <div class="pt-3">
+                                    <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
+                                        {% for message in messages %}
+                                            {{ message }}
+                                        {% endfor %}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <h5 class="card-title">وضعیت تراز مالی</h5>
+
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <span>جمع پرداختی:</span>
+                                    <small>{{ user.amount_paid|three_digits_currency|toman_suffix }}</small>
+                                </div>
+                                <div>
+                                    <span>جمع قابل پرداخت:</span>
+                                    <small>{{ user.amount_payable|three_digits_currency|toman_suffix }}</small>
+                                </div>
+                                <div>
+                                    <span>ما به تفاوت:</span>
+                                    <small>{{ user.the_difference|three_digits_currency|toman_suffix }}</small>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row">
+                                <form action="{% url 'request_payment' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="d-flex">
+                                        <span class="p-2">پرداخت:</span>
+                                        <input type="text" class="form-control" name="paymentAmount" id="paymentAmount" style="max-width: 300px;" placeholder="مبلغ را وارد کنید...">
+                                        <small class="gap-4 p-2"> تومان </small>
+                                        <button onclick="" type="submit" class="btn btn-success"><i class="bi bi-cash"></i> پرداخت الکترونیکی</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title">لیست پرداخت ها</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>سطر</th>
+                                    <th>نیمسال</th>
+                                    <th>مبلغ پرداخت</th>
+                                    <th data-type="date" data-format="YYYY/DD/MM">تاریخ پرداخت</th>
+                                    <th>وضعیت پرداخت</th>
+                                    <th>شناسه پرداخت</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for payment in student_payments %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ payment.for_semester }}</td>
+                                        <td>{{ payment.amount|three_digits_currency|toman_suffix }}</td>
+                                        <td>{{ payment.date }}</td>
+                                        <td>{{ payment.get_status_display }}</td>
+                                        <td>{{ payment.payment_id }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title">لیست صورت حساب ها</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>سطر</th>
+                                    <th>نوع صورت حساب</th>
+                                    <th>مبلغ</th>
+                                    <th data-type="date" data-format="YYYY/DD/MM">تاریخ صدور</th>
+                                    <th>وضعیت پرداخت</th>
+                                    <th>شناسه صورت حساب</th>
+                                    <th>پرداخت</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for bill in bills %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ bill.get_type_display }}</td>
+                                        <td>{{ bill.amount|three_digits_currency|toman_suffix }}</td>
+                                        <td>{{ bill.date }}</td>
+                                        {% if bill.is_paid %}
+                                            <td style="color: green;">پرداخت شده</td>
+                                        {% else %}
+                                            <td style="color: red;">پرداخت نشده</td>
+                                        {% endif %}
+                                        <td>{{ bill.bill_id }}</td>
+                                        <td>
+                                            {% if bill.is_paid %}
+                                                -
+                                            {% else %}
+                                                <form action="{% url 'request_payment' %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="bill_id" value="{{ bill.bill_id }}">
+                                                    <button class="btn btn-success" type="submit"><i class="bi bi-cash-stack"></i></button>
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

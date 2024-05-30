@@ -1,0 +1,171 @@
+{% load poll_extras %}
+{% load thumbnail %}
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="{% url 'index_page' %}" class="logo d-flex align-items-center">
+            <img src="/static/assets/img/logo.png" alt="">
+            <span class="d-lg-block ml-3">لرنجو</span>
+            <small>سامانه امور دانشجویی</small>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+
+            <li class="nav-item d-block d-lg-none">
+                <a class="nav-link nav-icon search-bar-toggle " href="#">
+                    <i class="bi bi-search"></i>
+                </a>
+            </li>
+
+            <li class="nav-item dropdown">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <span class="d-none d-md-block dropdown-toggle ps-2 pe-3">نیمسال {{ current_semester }}</span>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                    <div class="dropdown-header">
+                        انتخاب نیم سال
+                        <a onclick="changeToDefault()" class="cursor-pointer"><span class="badge rounded-pill bg-primary p-2 ms-2">تغییر به جاری</span></a>
+                    </div>
+
+
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <select class="form-select" aria-label="انتخاب نیمسال" id="semester">
+                                    <option selected>{{ current_semester }}</option>
+                                    {% for semester in other_semesters %}
+                                        <option value="{{ semester.semester_number }}">{{ semester.semester_number }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var selectElement = document.getElementById('semester');
+
+                            selectElement.addEventListener('change', function () {
+                                var semesterNumber = this.value;
+                                var data = new FormData();
+                                data.append('semester_number', semesterNumber);
+
+                                fetch('/change-semester', {
+                                    method: 'POST',
+                                    body: data,
+                                    headers: {
+                                        'X-CSRFToken': getCookie('csrftoken'),
+                                        {#'selected_semester': semesterNumber,#}
+                                    },
+                                })
+                                    .then(res => {
+                                        window.location.reload();
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log(data);
+                                    })
+                                    .catch((error) => {
+                                        console.error('Error:', error);
+                                    });
+                            });
+                        });
+
+                        function getCookie(name) {
+                            let cookieValue = null;
+                            if (document.cookie && document.cookie !== '') {
+                                const cookies = document.cookie.split(';');
+                                for (let i = 0; i < cookies.length; i++) {
+                                    const cookie = cookies[i].trim();
+                                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                        break;
+                                    }
+                                }
+                            }
+                            return cookieValue;
+                        }
+
+                        function changeToDefault() {
+                            $.get('/change-semester-to-default', {}).then(res => {
+                                window.location.reload();
+                            })
+                        }
+                    </script>
+
+
+                </div><!-- End Messages Dropdown Items -->
+
+            </li><!-- End Messages Nav -->
+
+
+            <li class="nav-item dropdown pe-3">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    {% thumbnail user.user.image "36x36" crop="50%" format="WEBP" as im %}
+                        <img src="{{ im.url }}" alt="پروفایل" class="rounded-circle">
+                    {% endthumbnail %}
+                    <span class="d-none d-md-block dropdown-toggle ps-2">{{ user }}</span>
+                </a><!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>{{ user }}</h6>
+                        <span>
+                            {{ user | get_user_role }}
+                        </span>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'user_profile' %}">
+                            <i class="bi bi-person"></i>
+                            <span>پروفایل من</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'edit_profile' %}">
+                            <i class="bi bi-gear"></i>
+                            <span>تنظیمات حساب کاربری</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'faq_page' %}">
+                            <i class="bi bi-question-circle"></i>
+                            <span>به کمک نیاز دارید؟</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>خروج</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
+    </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->

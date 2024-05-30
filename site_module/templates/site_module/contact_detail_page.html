@@ -1,0 +1,72 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+
+{% block title %}
+    لرنجو | جزئیات تیکت {{ get_ticket.subject }}
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">خانه</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">جزئیات تیکت</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-header">جزئیات تیکت: {{ get_ticket.subject }}</div>
+                        {% for message in get_ticket.contact_message.all %}
+                            <div class="card-body pb-0">
+                                <div class="row">
+                                    <div class="col-md-12 d-flex {% if message.from_student %}justify-content-start{% elif message.from_operator %}justify-content-end{% endif %}">
+                                        <div class="{% if message.from_student %}message-style-sender{% elif message.from_operator %}message-style-receiver{% endif %}">
+                                            <div class="d-block">
+                                                {% if message.from_student %}
+                                                    خودم
+                                                    <hr>
+                                                {% elif message.from_operator %}
+                                                    {{ message.from_operator }}
+                                                    <hr>
+                                                {% endif %}
+                                                <div class="pb-2">{{ message.message }}</div>
+                                                <small>{{ message.create_date }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+                        <hr>
+
+                        <div class="card-body">
+                            <form action="{% url 'contact_messages_detail' pk=get_ticket.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12 mt-3">
+                                        <label class="form-label" for="floatingTextarea">متن پیام:</label>
+                                        <div class="form-floating">
+                                            {{ message_content }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-info mb-2 mt-4"><i class="bi bi-check"></i> ارسال پیام</button>
+                            </form>
+                        </div>
+                    </div><!-- End Card with header and footer -->
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

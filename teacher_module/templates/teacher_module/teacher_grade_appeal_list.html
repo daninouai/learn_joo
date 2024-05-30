@@ -1,0 +1,126 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | لیست اعتراض دانشجویان
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">لیست اعتراض دانشجویان</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">امور کلاس ها</li>
+                    <li class="breadcrumb-item active">لیست اعتراض دانشجویان</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section profile">
+            <div class="row">
+
+                <div class="col-xl-12">
+
+                    <div class="card">
+
+
+                        <div class="card-body">
+
+                            {% if messages %}
+                                <div class="pt-3">
+                                    <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
+                                        {% for message in messages %}
+                                            {{ message }}
+                                        {% endfor %}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="alert alert-warning mt-4">
+                                <p>نکته: پس از بستن و پاسخ به درخواست نتیجه درخواست به دانشجو مرتبط اعلام می شود.</p>
+                            </div>
+
+                            <h5 class="card-title">اعتراض های ثبت شده جهت بررسی</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>سطر</th>
+                                    <th>کد درس</th>
+                                    <th>نام درس</th>
+                                    <th>دانشجو</th>
+                                    <th>نمره دانشجو</th>
+                                    <th>وضعیت قبولی</th>
+                                    <th>بررسی درخواست</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for mark in unresponded_appeals %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ mark.mark.presentation.lesson.lesson_code }}</td>
+                                        <td>{{ mark.mark.presentation.lesson.lesson_name }}</td>
+                                        <td>{{ mark.for_student }}</td>
+                                        <td>{{ mark.mark.mark }}</td>
+                                        <td>
+                                            {% if mark.mark.mark > 10 %}
+                                                پاس شده
+                                            {% else %}
+                                                پاس نشده
+                                            {% endif %}
+                                        </td>
+                                        <td><a href="{% url 'teacher_grade_appeal_detail' appeal_id=mark.id %}" class="btn btn-success"><i class="bi bi-file-check"></i></a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">اعتراض های پاسخ داده شده</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>سطر</th>
+                                    <th>کد درس</th>
+                                    <th>نام درس</th>
+                                    <th>دانشجو</th>
+                                    <th>نمره دانشجو</th>
+                                    <th>وضعیت قبولی</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for mark in responded_appeals %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ mark.mark.presentation.lesson.lesson_code }}</td>
+                                        <td>{{ mark.mark.presentation.lesson.lesson_name }}</td>
+                                        <td>{{ mark.for_student }}</td>
+                                        <td>{{ mark.mark.mark }}</td>
+                                        <td>
+                                            {% if mark.mark.mark > 10 %}
+                                                پاس شده
+                                            {% else %}
+                                                پاس نشده
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

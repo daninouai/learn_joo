@@ -1,0 +1,2 @@
+remove _get_flatchoices function.
+problem link : https://stackoverflow.com/questions/77738762/django-multiselectfield-error-super-object-has-no-attribute-get-flatchoices

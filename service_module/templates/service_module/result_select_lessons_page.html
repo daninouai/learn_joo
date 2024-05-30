@@ -1,0 +1,124 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | نتایج جستوجو کلاس های درس ارائه شده
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">نتایج جستوجو کلاس های درس ارائه شده</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">جستوجو کلاس های درس ارائه شده</li>
+                    <li class="breadcrumb-item active">نتایج</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">نتایج جستوجو</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        {#                                        <b>N</b>ame#}
+                                        نام درس
+                                    </th>
+                                    <th>کد درس</th>
+                                    <th>نام استاد</th>
+                                    <th data-type="date" data-format="YYYY/DD/MM">زمان تشکیل کلاس</th>
+                                    <th>ظرفیت کلاس</th>
+                                    <th>ظرفیت باقی مانده</th>
+                                    <th>انتخاب واحد</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for lesson in lessons %}
+                                    <tr>
+                                        <td>{{ lesson.lesson.lesson_name }}</td>
+                                        <td>{{ lesson.lesson.lesson_code }}</td>
+                                        <td>{{ lesson.teacher }}</td>
+                                        <td>{{ lesson.get_class_formation_time_display }}</td>
+                                        <td>{{ lesson.capacity | person_suffix }}</td>
+                                        <td>{{ lesson.remaining_capacity | person_suffix }}</td>
+                                        <td><a onclick="selectUnitAction('{{ lesson.id }}')" class="btn btn-success"><i class="bi bi-check"></i>انتخاب</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+
+
+                            <input type="hidden" value="{{ search_token }}" id="searchtoken" name="searchtoken">
+                            {#                            <script>#}
+                            {#                                function selectUnitAction(presentation_id) {#}
+                            {#                                    $.get('/select-unit-action', {#}
+                            {#                                        'selected_lesson_id': presentation_id,#}
+                            {#                                        'search_token': document.getElementById('searchtoken'),#}
+                            {#                                    }).then(res => {#}
+                            {#                                        window.location.href = '/select-unit'#}
+                            {#                                    })#}
+                            {#                                }#}
+                            {##}
+                            {#                            </script>#}
+
+
+                            <script>
+
+                                function selectUnitAction(presentation_id) {
+                                    var search_token = document.getElementById('searchtoken').value;
+                                    var data = new FormData();
+                                    data.append('selected_lesson_id', presentation_id);
+                                    data.append('search_token', search_token);
+
+                                    fetch('/select-unit-action', {
+                                        method: 'POST',
+                                        body: data,
+                                        headers: {
+                                            'X-CSRFToken': getCookie('csrftoken'),
+                                        },
+                                    })
+                                        .then(res => {
+                                            window.location.href = '/select-unit';
+                                        })
+                                        .catch((error) => {
+                                            console.error('Error:', error);
+                                        });
+                                }
+
+                                function getCookie(name) {
+                                    let cookieValue = null;
+                                    if (document.cookie && document.cookie !== '') {
+                                        const cookies = document.cookie.split(';');
+                                        for (let i = 0; i < cookies.length; i++) {
+                                            const cookie = cookies[i].trim();
+                                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    return cookieValue;
+                                }
+                            </script>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

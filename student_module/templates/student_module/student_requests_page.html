@@ -1,0 +1,105 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | ارسال، پیگیری درخواست ها
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">ارسال، پیگیری درخواست ها</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">درخواست و مجوز ها</li>
+                    <li class="breadcrumb-item active">ارسال، پیگیری درخواست ها</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            {% if messages %}
+                                <div class="pt-3">
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ message.tags|bootstrap_class }} alert-dismissible fade show mb-0" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <h5 class="card-title">لیست درخواست ها</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>سطر</th>
+                                    <th>موضوع درخواست</th>
+                                    <th>نتیجه درخواست</th>
+                                    <th data-type="date" data-format="YYYY/DD/MM">تاریخ درخواست</th>
+                                    <th>نیمسال موثر</th>
+                                    <th>شماره درخواست</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for request in user_requests %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ request.get_request_type_display }}</td>
+                                        <td>{{ request.get_status_display }}</td>
+                                        <td>{{ request.request_date.date }}</td>
+                                        <td>{{ request.for_semester }}</td>
+                                        <td>{{ request.request_number }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">ثبت درخواست جدید</h5>
+
+
+                            <form action="{% url 'student_requests' %}" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="requesttype">موضوع درخواست:</label>
+                                        {{ request_form.request_type }}
+                                        {#                                        <select id="requesttype" name="requesttype" class="form-select">#}
+                                        {#                                            {% for request in request_type_list %}#}
+                                        {#                                                <option value="{{ request }}">{{ request }}</option>#}
+                                        {#                                            {% endfor %}#}
+                                        {#                                        </select>#}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="floatingTextarea">متن درخواست:</label>
+                                        <div class="form-floating">
+                                            {{ request_form.request_text }}
+                                            {#                                            <textarea class="form-control" id="floatingTextarea" style="height: 100px;"></textarea>#}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-info mb-2"><i class="bi bi-check"></i> ثبت درخواست</button>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

@@ -1,0 +1,220 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | مشاهده کارنامه دانشجویی
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">مشاهده کارنامه دانشجویی</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">ثبت نام دروس</li>
+                    <li class="breadcrumb-item active">مشاهده کارنامه دانشجویی</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section profile">
+            <div class="row">
+
+                <div class="col-xl-12">
+
+                    <div class="card">
+                        <div class="card-body pt-3">
+                            <div class="tab-content">
+
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                                    <h5 class="card-title">مشاهده کارنامه دانشجویی</h5>
+
+                                    <div class="row pt-3">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label ">تصویر</div>
+                                                <div class="col-lg-9 col-md-8"><img src="{{ user.user.image.url }}" alt="Profile" class="rounded-circle" style="max-width: 120px;"></div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label ">نام کامل</div>
+                                                <div class="col-lg-9 col-md-8">{{ user_base.get_full_name }}</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label ">شماره دانشجویی</div>
+                                                <div class="col-lg-9 col-md-8">{{ user.student_number }}</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label">کد ملی</div>
+                                                <div class="col-lg-9 col-md-8">{{ user_base.national_code }}</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label">نام پدر</div>
+                                                <div class="col-lg-9 col-md-8">{{ user_base.father_name }}</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label">رشته</div>
+                                                <div class="col-lg-9 col-md-8">{{ user.major.get_show_name }}</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label">مقطع</div>
+                                                <div class="col-lg-9 col-md-8">{{ user.major.get_section_display }}</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label">گروه آموزشی</div>
+                                                <div class="col-lg-9 col-md-8">{{ user.major.educational_group.get_show_name }}</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label">وضعیت تحصیل</div>
+                                                <div class="col-lg-9 col-md-8">{{ user.get_education_status_display }}</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label">نوع پذیرش</div>
+                                                <div class="col-lg-9 col-md-8">{{ user.get_admission_display }}</div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label">شماره تلفن</div>
+                                                <div class="col-lg-9 col-md-8">{{ user_base.phone_number }}</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 label">ایمیل</div>
+                                                <div class="col-lg-9 col-md-8">{{ user_base.email }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 label ">کل تعداد واحد های اخذ شده</div>
+                                                <div class="col-lg-6 col-md-6">{{ user.units_obtained }} واحد</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 label ">کل تعداد واحد های گذرانده</div>
+                                                <div class="col-lg-6 col-md-6">{{ user.units_passed }} واحد</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 label">کل تعداد واحد های رد شده</div>
+                                                <div class="col-lg-6 col-md-6">{{ user.units_rejected }} واحد</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 label">سنوات (ترم) گذرانده</div>
+                                                <div class="col-lg-6 col-md-6">{{ user.semester_passed }} ترم</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div><!-- End Bordered Tabs -->
+                        </div>
+
+                        {% for semester_gap in semester_gaps %}
+                            <div class="card-body">
+                                <hr>
+                                <h5 class="card-title">نیمسال تحصیلی شماره {{ forloop.counter }} - {{ semester_gap.semester.semester_number }}</h5>
+
+                                <!-- Table with stripped rows -->
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>سطر</th>
+                                        <th>کد درس</th>
+                                        <th>نام درس</th>
+                                        <th>تعداد واحد نظری</th>
+                                        <th>تعداد واحد عملی</th>
+                                        <th>نمره</th>
+                                        <th>نمره با ضریب</th>
+                                        <th>وضعیت قبولی</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for mark in semester_gap.mark.all %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ mark.presentation.lesson.lesson_code }}</td>
+                                            <td>{{ mark.presentation.lesson.lesson_name }}</td>
+                                            <td>{% if mark.presentation.lesson.get_theoretical_unit_display %}
+                                                {{ mark.presentation.lesson.get_theoretical_unit_display }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                            </td>
+                                            <td>{% if mark.presentation.lesson.get_practical_units_display %}
+                                                {{ mark.presentation.lesson.get_practical_units_display }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                            </td>
+                                            <td>{{ mark.mark }}</td>
+                                            <td>{{ mark.mark|get_mark_with_coefficient:mark.presentation.lesson }}</td>
+                                            <td>
+                                                {% if mark.mark > 10 %}
+                                                    پاس شده
+                                                {% else %}
+                                                    پاس نشده
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-4 label ">معدل نیمسال</div>
+                                                        <div class="col-lg-9 col-md-8">{{ semester_gap.semester_GPA }}</div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-4 label ">معدل تاکنون</div>
+                                                        <div class="col-lg-9 col-md-8">{{ semester_gap.total_GPA }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-4 label ">واحد اخذ شده نیمسال</div>
+                                                        <div class="col-lg-9 col-md-8">{{ semester_gap.obtained_units }}</div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-4 label">واحد گذرانده نیمسال</div>
+                                                        <div class="col-lg-9 col-md-8">{{ semester_gap.passed_units }}</div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-4 label">واحد رد شده نیمسال</div>
+                                                        <div class="col-lg-9 col-md-8">{{ semester_gap.rejected_units }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

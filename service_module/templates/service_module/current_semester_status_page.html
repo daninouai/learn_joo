@@ -1,0 +1,78 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | مشاهده وضعیت ترم جاری
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">مشاهده وضعیت ترم جاری</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">ثبت نام دروس</li>
+                    <li class="breadcrumb-item active">مشاهده وضعیت ترم جاری</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">وضعیت نیمسال</h5>
+
+                            <div>
+                                <span>آخرین نیمسال ثبت شده:</span>
+                                <small>{{ last_semester }}</small>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">دروس ثبت نام شده</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        {#                                        <b>N</b>ame#}
+                                        نام درس
+                                    </th>
+                                    <th>کد درس</th>
+                                    <th>نام استاد</th>
+                                    <th data-type="date" data-format="YYYY/DD/MM">زمان تشکیل کلاس</th>
+                                    <th>ظرفیت کلاس</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for lesson in lessons %}
+                                    <tr>
+                                        <td>{{ lesson.lesson.lesson_name }}</td>
+                                        <td>{{ lesson.lesson.lesson_code }}</td>
+                                        <td>{{ lesson.teacher }}</td>
+                                        <td>{{ lesson.get_class_formation_time_display }}</td>
+                                        <td>{{ lesson.capacity | person_suffix }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+
+                            <a onclick="" class="btn btn-info mb-2"><i class="bi bi-printer"></i> چاپ برگه انتخاب واحد</a>
+                            <a onclick="" class="btn btn-warning mb-2"><i class="bi bi-card-checklist"></i> چاپ کارت ورود به جلسه</a>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

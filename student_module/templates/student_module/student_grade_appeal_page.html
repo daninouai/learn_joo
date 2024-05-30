@@ -1,0 +1,122 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | اعتراض به نمره در نیمسال جاری
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">اعتراض به نمره در نیمسال جاری</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">ثبت نام دروس</li>
+                    <li class="breadcrumb-item active">اعتراض به نمره در نیمسال جاری</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section profile">
+            <div class="row">
+
+                <div class="col-xl-12">
+
+                    <div class="card">
+
+
+                        <div class="card-body">
+                            <div class="alert alert-warning mt-4">
+                                <p>نکته: امکان درخواست اعتراض به نمره فقط یکبار برای هر درس وجود دارد.</p>
+                            </div>
+
+                            <h5 class="card-title">نمرات ثبت شده جهت اعتراض</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>سطر</th>
+                                    <th>کد درس</th>
+                                    <th>نام درس</th>
+                                    <th>نوع درس</th>
+                                    <th>استاد</th>
+                                    <th>نمره نهایی</th>
+                                    <th>وضعیت قبولی</th>
+                                    <th>درخواست اعتراض</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for mark in marks %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ mark.presentation.lesson.lesson_code }}</td>
+                                        <td>{{ mark.presentation.lesson.lesson_name }}</td>
+                                        <td>{{ mark.presentation.lesson.get_lesson_type_display }}</td>
+                                        <td>{{ mark.presentation.teacher }}</td>
+                                        <td>{{ mark.mark }}</td>
+                                        <td>
+                                            {% if mark.mark > 10 %}
+                                                پاس شده
+                                            {% else %}
+                                                پاس نشده
+                                            {% endif %}
+                                        </td>
+                                        <td><a href="{% url 'student_grade_appeal_detail' mark_id=mark.id %}" class="btn btn-success"><i class="bi bi-file-check"></i></a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">نمرات اعتراض شده</h5>
+
+                            <!-- Table with stripped rows -->
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>سطر</th>
+                                    <th>کد درس</th>
+                                    <th>نام درس</th>
+                                    <th>نوع درس</th>
+                                    <th>استاد</th>
+                                    <th>نمره نهایی</th>
+                                    <th>وضعیت پاسخ</th>
+                                    <th>مشاهده جزئیات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for appeal in graded_marks %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ appeal.mark.presentation.lesson.lesson_code }}</td>
+                                        <td>{{ appeal.mark.presentation.lesson.lesson_name }}</td>
+                                        <td>{{ appeal.mark.presentation.lesson.get_lesson_type_display }}</td>
+                                        <td>{{ appeal.mark.presentation.teacher }}</td>
+                                        <td>{{ appeal.mark.mark }}</td>
+                                        {% if appeal.is_response %}
+                                            <td style="color: green;">
+                                                پاسخ داده شده
+                                            </td>
+                                        {% else %}
+                                            <td style="color: red;">
+                                                پاسخ داده نشده
+                                            </td>
+                                        {% endif %}
+                                        <td><a href="#" class="btn btn-info"><i class="bi bi-eye"></i></a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}

@@ -1,0 +1,224 @@
+{% load poll_extras %}
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link {% if not request.resolver_match.url_name == 'home_page' %}collapsed{% endif %}" href="{% url 'home_page' %}">
+                <i class="bi bi-grid"></i>
+                <span>لرنجو</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+
+        {% if request.user|get_model_name == 'student' %}
+            <li class="nav-item">
+                <a class="nav-link {% if not request.resolver_match.url_name == 'select_unit' and not request.resolver_match.url_name == 'search_lessons' %}collapsed{% endif %}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>برنامه ریزی آموزشی</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content {% if not request.resolver_match.url_name == 'select_unit' and not request.resolver_match.url_name == 'search_lessons' %}collapse{% endif %}" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'select_unit' %}active{% endif %}" href="{% url 'select_unit' %}">
+                            <i class="bi bi-circle"></i><span>انتخاب واحد</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'search_lessons' %}active{% endif %}" href="{% url 'search_lessons' %}">
+                            <i class="bi bi-circle"></i><span>جستوجوی کلاس درس های ارائه شده</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Components Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link {% if not request.resolver_match.url_name == 'current_semester_status' and not request.resolver_match.url_name == 'student_report_card' and not request.resolver_match.url_name == 'student_grade_appeal_page' %}collapsed{% endif %}" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-journal-text"></i><span>ثبت نام دروس</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="forms-nav" class="nav-content {% if not request.resolver_match.url_name == 'current_semester_status' and not request.resolver_match.url_name == 'student_report_card' and not request.resolver_match.url_name == 'student_grade_appeal_page' %}collapse{% endif %}" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'current_semester_status' %}active{% endif %}" href="{% url 'current_semester_status' %}">
+                            <i class="bi bi-circle"></i><span>مشاهده وضعیت ترم جاری</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'student_grade_appeal_page' %}active{% endif %}" href="{% url 'student_grade_appeal_page' %}">
+                            <i class="bi bi-circle"></i><span>اعتراض به نمره در نیمسال جاری</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'student_report_card' %}active{% endif %}" href="{% url 'student_report_card' %}">
+                            <i class="bi bi-circle"></i><span>مشاهده کارنامه دانشجویی</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Forms Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link {% if not request.resolver_match.url_name == 'student_payments' and not request.resolver_match.url_name == 'student_manage_payments' %}collapsed{% endif %}" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-bar-chart"></i><span>امور مالی</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="tables-nav" class="nav-content {% if not request.resolver_match.url_name == 'student_payments' and not request.resolver_match.url_name == 'student_manage_payments' %}collapse{% endif %} " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'student_payments' %}active{% endif %}" href="{% url 'student_payments' %}">
+                            <i class="bi bi-circle"></i><span>مدیریت مالی نیمسال ها</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'student_manage_payments' %}active{% endif %}" href="{% url 'student_manage_payments' %}">
+                            <i class="bi bi-circle"></i><span>مدیریت پرداخت ها</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>درخواست، پیگیری تسهیلات</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Tables Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link {% if not request.resolver_match.url_name == 'student_requests' %}collapsed{% endif %}" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>درخواست و مجوز ها</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="charts-nav" class="nav-content {% if not request.resolver_match.url_name == 'student_requests' %}collapse{% endif %}" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'student_requests' %}active{% endif %}" href="{% url 'student_requests' %}">
+                            <i class="bi bi-circle"></i><span>ارسال، پیگیری درخواست ها</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Charts Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link {% if not request.resolver_match.url_name == 'evaluation_teacher' %}collapsed{% endif %}" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-person-workspace"></i><span>ارزیابی اساتید</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="icons-nav" class="nav-content {% if not request.resolver_match.url_name == 'evaluation_teacher' %}collapse{% endif %} " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'evaluation_teacher' %}active{% endif %}" href="{% url 'evaluation_teacher' %}">
+                            <i class="bi bi-circle"></i><span>ارزیابی در نیم سال جاری</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Icons Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#home-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-house-door"></i><span>امور خوابگاهی</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="home-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-circle"></i><span>ثبت نام تکی</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Icons Nav -->
+        {% endif %}
+
+        {% if request.user|get_model_name == 'teacher' %}
+            <li class="nav-item">
+                <a class="nav-link {% if not request.resolver_match.url_name == 'record_mark_page' and not request.resolver_match.url_name == 'teacher_grade_appeal_list' %}collapsed{% endif %}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>امور کلاس ها</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content {% if not request.resolver_match.url_name == 'record_mark_page' and not request.resolver_match.url_name == 'teacher_grade_appeal_list' %}collapse{% endif %}" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'record_mark_page' %}active{% endif %}" href="{% url 'record_mark_page' %}">
+                            <i class="bi bi-circle"></i><span>ثبت نمرات</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'teacher_grade_appeal_list' %}active{% endif %}" href="{% url 'teacher_grade_appeal_list' %}">
+                            <i class="bi bi-circle"></i><span>اعتراض دانشجویان</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Components Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link {% if not request.resolver_match.url_name == 'student_requests' %}collapsed{% endif %}" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>درخواست ها</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="charts-nav" class="nav-content {% if not request.resolver_match.url_name == 'student_requests' %}collapse{% endif %}" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'student_requests' %}active{% endif %}" href="{% url 'student_requests' %}">
+                            <i class="bi bi-circle"></i><span>ارسال، پیگیری درخواست ها</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Charts Nav -->
+        {% endif %}
+
+        {% if request.user|get_model_name == 'staff' %}
+            <li class="nav-item">
+                <a class="nav-link {% if not request.resolver_match.url_name == 'select_unit' and not request.resolver_match.url_name == 'search_lessons' %}collapsed{% endif %}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>امور کلاس ها</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content {% if not request.resolver_match.url_name == 'select_unit' and not request.resolver_match.url_name == 'search_lessons' %}collapse{% endif %}" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'select_unit' %}active{% endif %}" href="{% url 'select_unit' %}">
+                            <i class="bi bi-circle"></i><span>ثبت ارائه جدید</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'search_lessons' %}active{% endif %}" href="{% url 'search_lessons' %}">
+                            <i class="bi bi-circle"></i><span>ثبت درس جدید</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Components Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link {% if not request.resolver_match.url_name == 'student_requests' %}collapsed{% endif %}" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>درخواست ها</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="charts-nav" class="nav-content {% if not request.resolver_match.url_name == 'student_requests' %}collapse{% endif %}" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="{% if request.resolver_match.url_name == 'student_requests' %}active{% endif %}" href="{% url 'student_requests' %}">
+                            <i class="bi bi-circle"></i><span>ارسال، پیگیری درخواست ها</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Charts Nav -->
+        {% endif %}
+
+        <li class="nav-heading">لینک های مفید</li>
+
+        <li class="nav-item">
+            <a class="nav-link {% if not request.resolver_match.url_name == 'user_profile' %}collapsed{% endif %}" href="{% url 'user_profile' %}">
+                <i class="bi bi-person"></i>
+                <span>پروفایل من</span>
+            </a>
+        </li><!-- End Profile Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {% if not request.resolver_match.url_name == 'faq_page' %}collapsed{% endif %}" href="{% url 'faq_page' %}">
+                <i class="bi bi-question-circle"></i>
+                <span>سوالات</span>
+            </a>
+        </li><!-- End F.A.Q Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {% if not request.resolver_match.url_name == 'contact_messages_page' %}collapsed{% endif %}" href="{% url 'contact_messages_page' %}">
+                <i class="bi bi-envelope"></i>
+                <span>تیکت و پشتیبانی</span>
+            </a>
+        </li><!-- End Contact Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {% if not request.resolver_match.url_name == 'change_password' %}collapsed{% endif %}" href="{% url 'change_password' %}">
+                <i class="bi bi-lock"></i>
+                <span>تغییر کلمه عبور</span>
+            </a>
+        </li><!-- End Register Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {% if not request.resolver_match.url_name == 'logout' %}collapsed{% endif %}" href="{% url 'logout' %}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>خروج</span>
+            </a>
+        </li><!-- End Login Page Nav -->
+
+    </ul>
+
+</aside><!-- End Sidebar-->

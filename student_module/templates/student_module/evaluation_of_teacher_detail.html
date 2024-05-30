@@ -1,0 +1,73 @@
+{% extends 'shared/defaults_layout/_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    لرنجو | ارزیابی استاد
+{% endblock %}
+
+{% block content %}
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1 class="mb-3">ارزیابی استاد</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home_page' %}">خانه</a></li>
+                    <li class="breadcrumb-item">ارزیابی اساتید</li>
+                    <li class="breadcrumb-item active">ارزیابی استاد</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">استاد {{ lesson.teacher }} - درس {{ lesson.lesson.lesson_name }}</h5>
+
+                            <form action="{% url 'do_evaluation_teacher' presentation_id=lesson.id %}" method="post">
+                                {% csrf_token %}
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>سطر</th>
+                                        <th>توضیحیات</th>
+                                        <th>نکات</th>
+                                        <th>امتیاز</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>مهارت تدریس استاد و تسلط بر روی مطالب</td>
+                                        <td>بهترین امتیاز 10 و کمترین 1 است</td>
+                                        <td>{{ form.teaching_skills }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>وقت شناسی و حضور به موقع در کلاس</td>
+                                        <td>بهترین امتیاز 10 و کمترین 1 است</td>
+                                        <td>{{ form.punctuality }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>رفتار محترمانه در کلاس و رعایت حقوق متقابل</td>
+                                        <td>بهترین امتیاز 10 و کمترین 1 است</td>
+                                        <td>{{ form.respectful_behavior }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <button type="submit" class="btn btn-success"><i class="bi bi-check"></i> تایید</button>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+{% endblock %}
