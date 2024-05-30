@@ -50,7 +50,7 @@ python manage.py runserver
 **البته که لازمه پایتون رو نصب داشته باشی**
 
 # Frameworks And Languages
-* Django
+* [Django](https://www.djangoproject.com/)
 * HTML, CSS, JS
 
 # Authors
